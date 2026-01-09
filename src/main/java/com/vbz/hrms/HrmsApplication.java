@@ -9,6 +9,7 @@ public class HrmsApplication {
 		SpringApplication.run(HrmsApplication.class, args);
 		System.out.println("Running successfully");
 	
+	
 	}
 
 }
