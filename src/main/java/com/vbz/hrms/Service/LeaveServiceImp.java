@@ -11,6 +11,7 @@ import com.vbz.hrms.Respositoy.LeaveRespo;
 import com.vbz.hrms.Respositoy.UserResp;
 import com.vbz.hrms.dto.LeaveDto;
 import com.vbz.hrms.model.Leave;
+import com.vbz.hrms.model.LeaveStatus;
 import com.vbz.hrms.model.User;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -134,6 +135,37 @@ public class LeaveServiceImp implements LeaveService {
 			
 			leaveRespo.delete(leave);
 		return "leave delete succefully";
+	}
+
+	@Override
+	public List<Leave> getAllLeaves() {
+		
+		return leaveRespo.findAll();
+	}
+
+	@Override
+	public String approveOrRejectLeave(Long id, LeaveStatus status, HttpSession session) {
+
+	    Long loggedinuserid = (Long) session.getAttribute("LOGGED_IN_USER_ID");
+	    if (loggedinuserid == null) {
+	        throw new IllegalStateException("User not logged in");
+	    }
+
+	    User changer = userResp.findById(loggedinuserid)
+	            .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+	    Leave leave = leaveRespo.findById(id)
+	            .orElseThrow(() -> new EntityNotFoundException("Leave not found"));
+	    if (leave.getLeaveStatus() != LeaveStatus.PENDING) {
+	        throw new IllegalStateException("Only pending leave can be approved or rejected");
+	    }
+
+	    leave.setLeaveStatus(status);  
+	    leave.setStatusChanger(changer);  
+
+	    leaveRespo.save(leave);
+
+	    return "Leave " + status.name().toLowerCase() + " successfully";
 	}
 
 

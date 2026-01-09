@@ -26,7 +26,7 @@ public class ForgetPawordController {
 		this.forgetPasswordServive=forgetPasswordServive;
 	}
 	
-//	 @PostMapping("/forget-password")
+
 	 	@PutMapping("/forget-password")
 	    public ResponseEntity<String> forgetPassword(
 	            @RequestBody ForgetPawwordDto dto) {

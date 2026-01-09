@@ -3,6 +3,8 @@ package com.vbz.hrms.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -38,8 +40,14 @@ public class Leave {
 	private LocalDateTime updatedOn;
 	private LocalDateTime deletedOn;
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", nullable = false)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 //    @JoinColumn(name = "user_id", nullable = false)
 	private User user;
+	
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private User statusChanger;
 	
 	@PrePersist
 	private void onCreated() {

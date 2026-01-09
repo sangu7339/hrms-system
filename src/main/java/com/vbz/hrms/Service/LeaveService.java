@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.vbz.hrms.dto.LeaveDto;
 import com.vbz.hrms.model.Leave;
+import com.vbz.hrms.model.LeaveStatus;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -16,6 +17,12 @@ public interface LeaveService {
 	List<Leave> getMyLeaves(HttpSession session);
 
 	String deleteMyLeave(HttpSession session, Long id);
+
+	List<Leave> getAllLeaves();
+
+	String approveOrRejectLeave(Long id, LeaveStatus status, HttpSession session);
+
+	
 
 	
 	

@@ -80,12 +80,7 @@ public class UserController {
         }
     }
     
-    @GetMapping("/maxid")
-    public Long getmaxId() {
-    	Long maxid=userResp.findMaxUserId();
-    	System.out.println(maxid);
-    	return maxid;
-    }
+ 
     
 }
     	

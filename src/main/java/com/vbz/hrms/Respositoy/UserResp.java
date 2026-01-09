@@ -15,6 +15,6 @@ public interface UserResp extends JpaRepository<User, Long> {
 
 	Optional<User> findByPassword(String password);
 	 
-	@Query("SELECT MAX(u.id) FROM User u")
-    Long findMaxUserId();
+	Optional<User> findTopByUsernameStartingWithOrderByUsernameDesc(String prefix);
+
 }

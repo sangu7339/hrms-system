@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class OnboardingRequestDTO  {
 	
-	private Long userId;
+//	private Long userId;
     private PersonalDetailsDTO personalDetailsDTO ;
     private JobDetailsDTO jobDetailsDTO;
     private SalaryDetailsDTO salaryDetailsDTO;
