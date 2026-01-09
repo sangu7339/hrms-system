@@ -21,7 +21,13 @@ public class MonthlySalaryController {
 	}
 	
 	public String MothlySalary(@RequestBody MonthlySalaryDto dto) {
-		return null;
+		try {
+			String msg=monthlySalaryService.generateMonthlySalary(dto);
+			return msg;
+		}catch (Exception e) {
+			return e.getMessage();
+		}
+		
 	}
 	
 	
