@@ -8,8 +8,7 @@ public class HrmsApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HrmsApplication.class, args);
 		System.out.println("Running successfully");
-		System.out.println("                     assamualaikum lyari");
-		
+	
 			  
 		
 	}
