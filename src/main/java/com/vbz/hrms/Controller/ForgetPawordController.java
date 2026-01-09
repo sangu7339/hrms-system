@@ -49,7 +49,7 @@ public class ForgetPawordController {
 			String msg=forgetPasswordServive.resetPasword(dto);
 			return ResponseEntity.ok("Rest Password Successfully "+msg);
 		}catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.FAILED_DEPENDENCY).body(e.getMessage());
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
 		}
 	}
 	
@@ -59,7 +59,7 @@ public class ForgetPawordController {
 			String msg=forgetPasswordServive.changePassword(dto, session);
 			return ResponseEntity.status(HttpStatus.CREATED).body(msg);
 		}catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
 					
 		}
 	}

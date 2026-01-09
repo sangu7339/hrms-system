@@ -18,7 +18,7 @@ public class PersonalDetails {
     private String firstName;
     private String middleName;
     private String lastName;
-    private String fullName;
+  
     private String gender;
 
     private LocalDate dob;

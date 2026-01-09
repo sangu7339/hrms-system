@@ -26,7 +26,6 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 @Service
 public class DeptServiceImp implements DeptService {
-
     private final DepartmentRespo departmentRespo;
     private final UserResp userResp;
     private final DesignationRespo designationRespo;
@@ -35,7 +34,6 @@ public class DeptServiceImp implements DeptService {
     private final BankDetailsRespo bankDetailsRespo;
     private final EmployeeStatutoryDetailsRespo employeeStatutoryDetailsRespo;
     private final SalaryDetailsRespo salaryDetailsRespo;
-
   
 
     public DeptServiceImp(DepartmentRespo departmentRespo, UserResp userResp, DesignationRespo designationRespo,
@@ -110,7 +108,7 @@ public class DeptServiceImp implements DeptService {
 		PersonalDetails p=new PersonalDetails();
 		p.setFirstName(dto.getPersonalDetailsDTO().getFirstName());
 		p.setLastName(dto.getPersonalDetailsDTO().getLastName());
-		p.setFullName(dto.getPersonalDetailsDTO().getFullName());
+		
 		p.setGender(dto.getPersonalDetailsDTO().getGender());
 		p.setDob(dto.getPersonalDetailsDTO().getDob());
 		p.setNationality(dto.getPersonalDetailsDTO().getNationality());

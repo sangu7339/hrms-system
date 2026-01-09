@@ -65,7 +65,7 @@ public class ForgetPasswordServive {
 			user.setStatus(status);
 			user.setPassword(dto.getPassword());
 			userResp.save(user);
-		
+		System.out.println(dto.getOldpassword() +" "+dto.getPassword());
 		return user.getUsername();
 	}
 

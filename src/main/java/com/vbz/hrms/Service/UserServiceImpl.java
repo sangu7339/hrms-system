@@ -1,5 +1,8 @@
 package com.vbz.hrms.Service;
 import com.vbz.hrms.Respositoy.Role_MatsreRespo;
+
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import com.vbz.hrms.model.Role_Master;
 import com.vbz.hrms.Respositoy.Role_MatsreRespo;
@@ -41,21 +44,39 @@ public class UserServiceImpl implements UserService {
 
 	    return userResp.save(user);
 	}
-	   @Override
-	    public String login(UserRequestDto dto, HttpSession session) {
-
-	        User user = userResp
-	                .findByUsernameAndPassword(
-	                        dto.getUsername(), dto.getPassword())
-	                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
-	        User_Role user_Role=user_RoleRespo.findByUser_id(user.getId())
-	        		.orElseThrow(()->new RuntimeException("user not found in role"));
-	       
-	        session.setAttribute("LOGGED_IN_USER_ID", user.getId());
-	        return user_Role.getRole().getId()+",  status : "+user.getStatus();
-	       
-	    }
+//	   @Override
+//	    public String login(UserRequestDto dto, HttpSession session) {
+//
+//	        User user = userResp
+//	                .findByUsernameAndPassword(
+//	                        dto.getUsername(), dto.getPassword())
+//	                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+//	        User_Role user_Role=user_RoleRespo.findByUser_id(user.getId())
+//	        		.orElseThrow(()->new RuntimeException("user not found in role"));
+//	       
+//	        session.setAttribute("LOGGED_IN_USER_ID", user.getId());
+//	        return user_Role.getRole().getId()+",  status : "+user.getStatus();
+//	       
+//	    }
 	   
+	@Override
+	public String login(UserRequestDto dto, HttpSession session) {
+
+		User user = userResp.findByUsername(dto.getUsername())
+			    .orElseThrow(() -> new RuntimeException("Invalid username"));
+
+			if (!user.getPassword().equals(dto.getPassword())) {
+			    throw new RuntimeException("Invalid password");
+			}
+
+	    User_Role userRole = user_RoleRespo.findByUser_id(user.getId())
+	            .orElseThrow(() -> new RuntimeException("User role not assigned"));
+	    
+	    session.setAttribute("LOGGED_IN_USER_ID", user.getId());
+
+	    return userRole.getRole().getId() + ",  status : " + user.getStatus();
+	}
+
 	   @Override
 	   public Role_Master createRole(RoleReq dto) {
 
@@ -101,6 +122,8 @@ public class UserServiceImpl implements UserService {
 
 	      
 	    }
+
+	
 
 	
 	

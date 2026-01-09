@@ -1,5 +1,6 @@
 package com.vbz.hrms.Controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +24,14 @@ import jakarta.servlet.http.HttpSession;
 public class UserController {
 
     private final UserService userService;
+	private UserResp userResp;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserResp userResp) {
      
         this.userService=userService;
+        this.userResp=userResp;
     }
+  
 
     @PostMapping("/add")
     public ResponseEntity<ApiResponse<User>> add(
@@ -75,6 +79,14 @@ public class UserController {
                     .body(new ApiResponse<>(false, e.getMessage(), null));
         }
     }
-    	
-
+    
+    @GetMapping("/maxid")
+    public Long getmaxId() {
+    	Long maxid=userResp.findMaxUserId();
+    	System.out.println(maxid);
+    	return maxid;
+    }
+    
 }
+    	
+  

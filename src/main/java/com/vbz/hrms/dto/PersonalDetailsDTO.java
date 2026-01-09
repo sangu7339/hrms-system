@@ -10,7 +10,7 @@ public class PersonalDetailsDTO {
     private String middleName;
     private String lastName;
     private String gender;
-    private String fullName;
+  
     private LocalDate dob;
 
     private String nationality;
