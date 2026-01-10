@@ -170,18 +170,18 @@ public class MonthlySalaryServiceImp implements MonthlySalaryService {
         }).toList();
     }
 
-//	@Override
-//	public List<MonthlySalary> employeeSalary(HttpSession session) {
-//	    Long hrId = (Long) session.getAttribute("LOGGED_IN_USER_ID");
-//	    if(hrId==null) {
-//	    	throw new IllegalStateException("user not login");
-//	    }
-//	    User user=userResp.findById(hrId)
-//	    		.orElseThrow(()-> new EntityNotFoundException("user not found"));
-//	    List<MonthlySalary>list=monthlySalaryRespo.findByUser(user);
-//	    		
-//		return list;
-//	}
+	@Override
+	public List<MonthlySalary> employeeSalary(HttpSession session) {
+	    Long hrId = (Long) session.getAttribute("LOGGED_IN_USER_ID");
+	    if(hrId==null) {
+	    	throw new IllegalStateException("user not login");
+	    }
+	    User user=userResp.findById(hrId)
+	    		.orElseThrow(()-> new EntityNotFoundException("user not found"));
+	    List<MonthlySalary>list=monthlySalaryRespo.findByUser(user);
+	    		
+		return list;
+	}
 
 
 }

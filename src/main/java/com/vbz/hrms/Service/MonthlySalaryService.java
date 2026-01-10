@@ -14,7 +14,7 @@ public interface MonthlySalaryService {
 
 	List<MonthlySalaryResponseDto> getsalaryListMonthAndYear(Integer year, Integer month);
 
-//	List<MonthlySalary> employeeSalary(HttpSession session);
+	List<MonthlySalary> employeeSalary(HttpSession session);
 
 
 }

@@ -58,13 +58,13 @@ public class MonthlySalaryController {
         }
     }
     
-//    @GetMapping("/emp/my")
-//    public ResponseEntity<?>fetchEmployeeAll(HttpSession session){
-//    	try {
-//    		List<MonthlySalary>list=monthlySalaryService.employeeSalary(session);
-//    		return ResponseEntity.status(HttpStatus.OK).body(list);
-//    	}catch (Exception e) {
-//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-//		}
-//    }
+    @GetMapping("my")
+    public ResponseEntity<?>fetchEmployeeAll(HttpSession session){
+    	try {
+    		List<MonthlySalary>list=monthlySalaryService.employeeSalary(session);
+    		return ResponseEntity.status(HttpStatus.OK).body(list);
+    	}catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+		}
+    }
 }
