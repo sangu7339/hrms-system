@@ -18,6 +18,12 @@ public class BankDetails {
     private String accountNumber;
     private String ifsc;
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    
+    
     private LocalDateTime createdOn;
 
    
@@ -26,10 +32,7 @@ public class BankDetails {
    
     private LocalDateTime deletedOn;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
+   
     @PrePersist
     public void onCreate() {
         this.createdOn = LocalDateTime.now();

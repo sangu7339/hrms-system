@@ -46,4 +46,6 @@ public class User {
         this.deletedOn = LocalDateTime.now();
         this.status = 0;
     }
+  
 }
+

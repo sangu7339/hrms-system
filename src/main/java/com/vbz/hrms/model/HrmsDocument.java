@@ -15,4 +15,5 @@ public class HrmsDocument {
     private String documentType; 
     private String fileId;     
     private String fileName;
+    
 }
