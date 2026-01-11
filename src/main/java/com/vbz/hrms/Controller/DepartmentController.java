@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/api/departments")
+@CrossOrigin(origins = "http://localhost:5173")
 public class DepartmentController {
 
     private final DepartmentService service;
