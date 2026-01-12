@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import com.vbz.hrms.model.User;
 
 public interface UserResp extends JpaRepository<User, Long> {
+	Optional<User> findByUsernameIgnoreCase(String username);
+
 
     Optional<User> findByUsername(String username);
 

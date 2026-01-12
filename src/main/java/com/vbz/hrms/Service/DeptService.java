@@ -13,6 +13,14 @@ public interface DeptService {
 	 String createDesignation(DesignationDto dto, HttpSession session);
 
 	 String empOnBoarding(OnboardingRequestDTO dto);
+
+	public Object searchEmployee(String value);
+
+	String editEmployee(Long userId, OnboardingRequestDTO dto);
+	
+	OnboardingRequestDTO getLoggedInEmployeeDetails(HttpSession session);
+
+
 		
 	
 	

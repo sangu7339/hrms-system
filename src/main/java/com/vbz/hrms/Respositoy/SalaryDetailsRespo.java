@@ -9,7 +9,8 @@ import com.vbz.hrms.model.User;
 
 public interface SalaryDetailsRespo extends JpaRepository<SalaryDetails, Long> {
 
-	Optional<SalaryDetails>findByUser(User user);
+	
+	Optional<SalaryDetails> findByUser(User user);
 	
 
 }
