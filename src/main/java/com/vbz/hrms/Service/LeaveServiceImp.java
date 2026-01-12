@@ -8,6 +8,7 @@ import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.vbz.hrms.Respositoy.LeaveRespo;
+import com.vbz.hrms.Respositoy.PersonalDetailsRespo;
 import com.vbz.hrms.Respositoy.UserResp;
 import com.vbz.hrms.dto.LeaveDto;
 import com.vbz.hrms.dto.LeaveResponseDto;
@@ -22,10 +23,13 @@ public class LeaveServiceImp implements LeaveService {
 	
 	private final UserResp userResp;
 	private final LeaveRespo leaveRespo;
+	private final  PersonalDetailsRespo personalDetailsRespo;
 
-	public LeaveServiceImp(UserResp userResp, LeaveRespo leaveRespo) {
+	public LeaveServiceImp(UserResp userResp, LeaveRespo leaveRespo, PersonalDetailsRespo personalDetailsRespo) {
 		this.userResp=userResp;
 		this.leaveRespo=leaveRespo;
+		this.personalDetailsRespo=personalDetailsRespo;
+		
 	}
 
 	@Override
@@ -139,13 +143,6 @@ public class LeaveServiceImp implements LeaveService {
 	}
 
 
-//	@Override
-//	public List<Leave> getAllLeaves() {
-//		List<Leave>list=leaveRespo.findAll();
-//		
-//		return list;
-//	}
-
 	@Override
 	public String approveOrRejectLeave(Long id, LeaveStatus status, HttpSession session) {
 
@@ -170,9 +167,6 @@ public class LeaveServiceImp implements LeaveService {
 
 	    return "Leave " + status.name().toLowerCase() + " successfully";
 	}
-
-
-	
 	@Override
 	public List<LeaveResponseDto> getAllLeaves() {
 
@@ -189,19 +183,29 @@ public class LeaveServiceImp implements LeaveService {
 	        dto.setReason(leave.getReason());
 	        dto.setLeaveStatus(leave.getLeaveStatus().name());
 
+	        
 	        if (leave.getUser() != null) {
 	            dto.setEmployeeId(leave.getUser().getId());
-	            dto.setEmployeeName(leave.getUser().getUsername());
+
+	            personalDetailsRespo.findByUser(leave.getUser())
+	                .ifPresent(pd -> {
+	                    String fullName = pd.getFirstName() + " " + pd.getLastName();
+	                    dto.setEmployeeName(fullName);
+	                });
 	        }
 
+	       
 	        if (leave.getStatusChanger() != null) {
-	            dto.setStatusChangedBy(
-	                leave.getStatusChanger().getUsername()
-	            );
+	        	personalDetailsRespo.findByUser(leave.getStatusChanger())
+	                .ifPresent(pd -> {
+	                    String hrName = pd.getFirstName() + " " + pd.getLastName();
+	                    dto.setStatusChangedBy(hrName);
+	                });
 	        }
 
 	        return dto;
 	    }).toList();
 	}
+
 
 }
