@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.vbz.hrms.Respositoy.LeaveRespo;
 import com.vbz.hrms.Respositoy.UserResp;
 import com.vbz.hrms.dto.LeaveDto;
+import com.vbz.hrms.dto.LeaveResponseDto;
 import com.vbz.hrms.model.Leave;
 import com.vbz.hrms.model.LeaveStatus;
 import com.vbz.hrms.model.User;
@@ -137,11 +138,13 @@ public class LeaveServiceImp implements LeaveService {
 		return "leave delete succefully";
 	}
 
-	@Override
-	public List<Leave> getAllLeaves() {
-		
-		return leaveRespo.findAll();
-	}
+
+//	@Override
+//	public List<Leave> getAllLeaves() {
+//		List<Leave>list=leaveRespo.findAll();
+//		
+//		return list;
+//	}
 
 	@Override
 	public String approveOrRejectLeave(Long id, LeaveStatus status, HttpSession session) {
@@ -170,7 +173,35 @@ public class LeaveServiceImp implements LeaveService {
 
 
 	
-	
+	@Override
+	public List<LeaveResponseDto> getAllLeaves() {
 
+	    List<Leave> list = leaveRespo.findAll();
+
+	    return list.stream().map(leave -> {
+	        LeaveResponseDto dto = new LeaveResponseDto();
+
+	        dto.setLeaveId(leave.getId());
+	        dto.setLeaveType(leave.getLeaveType());
+	        dto.setStartDate(leave.getStartDate());
+	        dto.setEndDate(leave.getEndDate());
+	        dto.setDays(leave.getDays());
+	        dto.setReason(leave.getReason());
+	        dto.setLeaveStatus(leave.getLeaveStatus().name());
+
+	        if (leave.getUser() != null) {
+	            dto.setEmployeeId(leave.getUser().getId());
+	            dto.setEmployeeName(leave.getUser().getUsername());
+	        }
+
+	        if (leave.getStatusChanger() != null) {
+	            dto.setStatusChangedBy(
+	                leave.getStatusChanger().getUsername()
+	            );
+	        }
+
+	        return dto;
+	    }).toList();
+	}
 
 }

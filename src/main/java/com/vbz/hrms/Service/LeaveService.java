@@ -3,6 +3,7 @@ package com.vbz.hrms.Service;
 import java.util.List;
 
 import com.vbz.hrms.dto.LeaveDto;
+import com.vbz.hrms.dto.LeaveResponseDto;
 import com.vbz.hrms.model.Leave;
 import com.vbz.hrms.model.LeaveStatus;
 
@@ -18,9 +19,11 @@ public interface LeaveService {
 
 	String deleteMyLeave(HttpSession session, Long id);
 
-	List<Leave> getAllLeaves();
+//	 List<LeaveResponseDto> getAllLeaves();
 
 	String approveOrRejectLeave(Long id, LeaveStatus status, HttpSession session);
+
+	Object getAllLeaves();
 
 	
 

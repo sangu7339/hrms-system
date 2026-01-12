@@ -77,18 +77,6 @@ public class LeaveController {
 		}
 	  }
 	  
-	  
-	@GetMapping("leave/all/list")
-	public  ResponseEntity<List<Leave>>getAllEmployeeLeaves(){
-		try {
-			List<Leave> leaves=leaveService.getAllLeaves();
-			return ResponseEntity.status(HttpStatus.OK).body(leaves);
-		}
-	catch (Exception e) {
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-	}
-	}
-
 	@PutMapping("/leave/{id}/status")
 	public ResponseEntity<String> approveOrRejectLeave(
 	        @PathVariable("id") Long id,
@@ -110,5 +98,22 @@ public class LeaveController {
 	                .body(e.getMessage());
 	    }
 	}
+	
+	
+	@GetMapping("/leave/all")
+	public ResponseEntity<?> getAllEmployeeLeaves() {
+	    try {
+	        return ResponseEntity.ok(leaveService.getAllLeaves());
+	    } catch (Exception e) {
+	        return ResponseEntity
+	                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                .body(e.getMessage());
+	    }
+	}
+
+	
+	
+	
+	
 
 }
