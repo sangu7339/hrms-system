@@ -19,6 +19,8 @@ public interface UserService {
 
  User_Role assignRole(UserRoleRequestDto dto, HttpSession session);
 
+public String deActivet(Long id);
+
 
 
 

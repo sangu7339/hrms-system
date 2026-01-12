@@ -15,6 +15,7 @@ import com.vbz.hrms.model.Role_Master;
 import com.vbz.hrms.model.User;
 import com.vbz.hrms.model.User_Role;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
 @Service
 public class UserServiceImpl implements UserService {
@@ -123,10 +124,16 @@ public class UserServiceImpl implements UserService {
 	      
 	    }
 
-	
-
-	
-	
-	
+	@Override
+	public String deActivet(Long id) {
+		User user=userResp.findById(id)
+				.orElseThrow(()-> new EntityNotFoundException("user not found"));
+		if(user.getStatus()==0) {
+			 throw new IllegalStateException("already deactiveted");
+		}
+		user.setStatus(0);
+	userResp.save(user);
+		return "Deactiveted";
+	}
 
 }

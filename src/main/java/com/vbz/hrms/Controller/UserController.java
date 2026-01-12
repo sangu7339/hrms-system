@@ -80,7 +80,15 @@ public class UserController {
         }
     }
     
- 
+ @PutMapping("hr/deactive/{id}")
+ public String deActivet(@PathVariable Long id) {
+	 try {
+		 String msg=userService.deActivet(id);
+		 return msg;
+	 }catch (Exception e) {
+		return e.getMessage();
+	}
+ }
     
 }
     	
