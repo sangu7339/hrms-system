@@ -183,5 +183,94 @@ public class MonthlySalaryServiceImp implements MonthlySalaryService {
 		return list;
 	}
 
+	@Override
+	@Transactional
+	public String editsalary(MonthlySalaryDto dto, Long salaryId, HttpSession session) {
+
+	    Long hrId = (Long) session.getAttribute("LOGGED_IN_USER_ID");
+	    if (hrId == null) {
+	        throw new IllegalStateException("HR not logged in");
+	    }
+
+	    User hr = userResp.findById(hrId)
+	            .orElseThrow(() -> new EntityNotFoundException("HR not found"));
+
+	    MonthlySalary salary = monthlySalaryRespo.findById(salaryId)
+	            .orElseThrow(() -> new EntityNotFoundException("Salary record not found"));
+
+	    if (dto.getActualDay() > dto.getTotalDay()) {
+	        throw new IllegalArgumentException(
+	                "Actual working days cannot exceed total working days");
+	    }
+
+	    User employee = salary.getUser();
+
+	    SalaryDetails salaryDetails = salaryDetailsRespo.findByUser(employee)
+	            .orElseThrow(() -> new EntityNotFoundException("Salary details not found"));
+
+	    BigDecimal months = BigDecimal.valueOf(12);
+
+	    BigDecimal basicPerMonth =
+	            salaryDetails.getBasic().divide(months, 2, RoundingMode.HALF_UP);
+
+	    BigDecimal hraPerMonth =
+	            salaryDetails.getHra().divide(months, 2, RoundingMode.HALF_UP);
+
+	    BigDecimal conveyancePerMonth =
+	            salaryDetails.getConveyanceAllowance().divide(months, 2, RoundingMode.HALF_UP);
+
+	    BigDecimal totalMonthlySalary =
+	            basicPerMonth.add(hraPerMonth).add(conveyancePerMonth);
+
+	    BigDecimal totalDaysBD = BigDecimal.valueOf(dto.getTotalDay());
+	    BigDecimal actualDaysBD = BigDecimal.valueOf(dto.getActualDay());
+
+	    BigDecimal perDaySalary =
+	            totalMonthlySalary.divide(totalDaysBD, 2, RoundingMode.HALF_UP);
+
+	    BigDecimal basicPay =
+	            basicPerMonth.divide(totalDaysBD, 2, RoundingMode.HALF_UP)
+	                    .multiply(actualDaysBD);
+
+	    BigDecimal hraPay =
+	            hraPerMonth.divide(totalDaysBD, 2, RoundingMode.HALF_UP)
+	                    .multiply(actualDaysBD);
+
+	    BigDecimal conveyancePay =
+	            conveyancePerMonth.divide(totalDaysBD, 2, RoundingMode.HALF_UP)
+	                    .multiply(actualDaysBD);
+
+	    BigDecimal actualGrossSalary =
+	            basicPay.add(hraPay).add(conveyancePay)
+	                    .setScale(2, RoundingMode.HALF_UP);
+
+	    BigDecimal expectedGrossSalary =
+	            perDaySalary.multiply(actualDaysBD)
+	                    .setScale(2, RoundingMode.HALF_UP);
+
+	    BigDecimal lop =
+	            expectedGrossSalary.subtract(actualGrossSalary)
+	                    .setScale(2, RoundingMode.HALF_UP);
+
+	  
+	    salary.setTotalDay(dto.getTotalDay());
+	    salary.setActualDay(dto.getActualDay());
+	    salary.setBasic(basicPay);
+	    salary.setHra(hraPay);
+	    salary.setConveyanceAllowance(conveyancePay);
+	    salary.setGrossSalary(actualGrossSalary);
+	    salary.setLop(lop);
+	    salary.setGeneratedBy(hr);
+
+	    monthlySalaryRespo.save(salary);
+
+	    return "Monthly salary updated successfully";
+	}
+
+
+	
+
+	
+
 
 }

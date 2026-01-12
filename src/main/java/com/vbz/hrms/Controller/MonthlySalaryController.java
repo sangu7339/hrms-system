@@ -24,7 +24,7 @@ public class MonthlySalaryController {
         this.monthlySalaryService = monthlySalaryService;
     }
 
-    @PostMapping("/month")
+    @PostMapping("hr/month")
     public ResponseEntity<String> generateMonthlySalary(
             @RequestBody MonthlySalaryDto dto,
             HttpSession session) {
@@ -40,7 +40,7 @@ public class MonthlySalaryController {
                     .body(e.getMessage());
         }
     }
-    @GetMapping("/month")
+    @GetMapping("hr/month")
     public ResponseEntity<?> fetchYearAndMonth(
             @RequestParam Integer month,
             @RequestParam Integer year) {
@@ -58,7 +58,7 @@ public class MonthlySalaryController {
         }
     }
     
-    @GetMapping("my")
+    @GetMapping("emp/my")
     public ResponseEntity<?>fetchEmployeeAll(HttpSession session){
     	try {
     		List<MonthlySalary>list=monthlySalaryService.employeeSalary(session);
@@ -67,4 +67,24 @@ public class MonthlySalaryController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
 		}
     }
-}
+    
+    @PutMapping("/edit/{salaryId}")
+    public ResponseEntity<String> editSalary(
+            @PathVariable Long salaryId,
+            @RequestBody MonthlySalaryDto dto,
+            HttpSession session) {
+
+        try {
+            return ResponseEntity.ok(
+                    monthlySalaryService.editsalary(dto, salaryId, session)
+            );
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
+    }
+
+    
+    }
+

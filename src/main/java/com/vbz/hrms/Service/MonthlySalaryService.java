@@ -16,5 +16,12 @@ public interface MonthlySalaryService {
 
 	List<MonthlySalary> employeeSalary(HttpSession session);
 
+	String editsalary(MonthlySalaryDto dto, Long salaryId, HttpSession session);
+
+
+
+	
+
+	
 
 }
