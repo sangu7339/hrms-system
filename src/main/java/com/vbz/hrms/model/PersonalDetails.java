@@ -37,6 +37,7 @@ public class PersonalDetails {
     private String address2;
 
     private String emergencyContactName;
+    private String emergencyContactRelation;
     private String emergencyPhoneNumber;
 
     @OneToOne

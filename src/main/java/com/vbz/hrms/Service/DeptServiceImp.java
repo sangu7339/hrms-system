@@ -150,6 +150,7 @@ public class DeptServiceImp implements DeptService {
         p.setAddress1(dto.getPersonalDetailsDTO().getAddress1());
         p.setAddress2(dto.getPersonalDetailsDTO().getAddress2());
         p.setEmergencyContactName(dto.getPersonalDetailsDTO().getEmergencyContactName());
+        p.setEmergencyContactRelation(dto.getPersonalDetailsDTO().getEmergencyContactRelation());
         p.setEmergencyPhoneNumber(dto.getPersonalDetailsDTO().getEmergencyPhoneNumber());
         p.setUser(user);
         personalDetailsRespo.save(p);
@@ -201,13 +202,11 @@ public class DeptServiceImp implements DeptService {
 
         User user = null;
 
-        // 1️⃣ Search by username
+      
         Optional<User> userOpt = userResp.findByUsernameIgnoreCase(value);
         if (userOpt.isPresent()) {
             user = userOpt.get();
         }
-
-        // 2️⃣ Search by name
         if (user == null) {
             Optional<PersonalDetails> pOpt =
                     personalDetailsRespo.findByFirstNameIgnoreCase(value)
@@ -218,7 +217,6 @@ public class DeptServiceImp implements DeptService {
             }
         }
 
-        // 3️⃣ Search by department / designation
         if (user == null) {
             Optional<JobDetails> jOpt =
                     jobDetailsRespo.findByDepartmentOrDesignation(value);
@@ -232,11 +230,9 @@ public class DeptServiceImp implements DeptService {
             throw new RuntimeException("Employee not found");
         }
 
-        // ================= BUILD RESPONSE DTO =================
 
         OnboardingRequestDTO dto = new OnboardingRequestDTO();
 
-        // -------- Personal Details --------
         PersonalDetails p = personalDetailsRespo.findByUser(user).orElse(null);
         if (p != null) {
             PersonalDetailsDTO pdto = new PersonalDetailsDTO();
@@ -260,7 +256,6 @@ public class DeptServiceImp implements DeptService {
             dto.setPersonalDetailsDTO(pdto);
         }
 
-        // -------- Job Details --------
         JobDetails j = jobDetailsRespo.findByUser(user).orElse(null);
         if (j != null) {
             JobDetailsDTO jdto = new JobDetailsDTO();
@@ -272,7 +267,6 @@ public class DeptServiceImp implements DeptService {
             dto.setJobDetailsDTO(jdto);
         }
 
-        // -------- Salary Details --------
         SalaryDetails s = salaryDetailsRespo.findByUser(user).orElse(null);
         if (s != null) {
             SalaryDetailsDTO sdto = new SalaryDetailsDTO();
@@ -284,7 +278,6 @@ public class DeptServiceImp implements DeptService {
             dto.setSalaryDetailsDTO(sdto);
         }
 
-        // -------- Bank Details --------
         BankDetails b = bankDetailsRespo.findByUser(user).orElse(null);
         if (b != null) {
             BankDetailsDTO bdto = new BankDetailsDTO();
@@ -294,8 +287,6 @@ public class DeptServiceImp implements DeptService {
 
             dto.setBankDetailsDTO(bdto);
         }
-
-        // -------- Statutory Details --------
         EmployeeStatutoryDetails e =
                 employeeStatutoryDetailsRespo.findByUser(user).orElse(null);
 
@@ -337,6 +328,7 @@ public class DeptServiceImp implements DeptService {
         p.setAddress1(dto.getPersonalDetailsDTO().getAddress1());
         p.setAddress2(dto.getPersonalDetailsDTO().getAddress2());
         p.setEmergencyContactName(dto.getPersonalDetailsDTO().getEmergencyContactName());
+        p.setEmergencyContactRelation(dto.getPersonalDetailsDTO().getEmergencyContactRelation());
         p.setEmergencyPhoneNumber(dto.getPersonalDetailsDTO().getEmergencyPhoneNumber());
 
         personalDetailsRespo.save(p);
