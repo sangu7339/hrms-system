@@ -19,6 +19,7 @@ public class SalaryDetails {
     private BigDecimal basic;
     private BigDecimal hra;
     private BigDecimal conveyanceAllowance;
+    private BigDecimal pf;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

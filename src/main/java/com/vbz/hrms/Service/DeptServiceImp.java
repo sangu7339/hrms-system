@@ -191,6 +191,7 @@ public class DeptServiceImp implements DeptService {
         s.setHra(dto.getSalaryDetailsDTO().getHra());
         s.setConveyanceAllowance(dto.getSalaryDetailsDTO().getConveyanceAllowance());
         s.setCtc(dto.getSalaryDetailsDTO().getCtc());
+        s.setPf(dto.getSalaryDetailsDTO().getPf());
         s.setUser(user);
         salaryDetailsRespo.save(s);
 

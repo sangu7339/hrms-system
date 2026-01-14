@@ -10,6 +10,7 @@ public class SalaryDetailsDTO {
     private BigDecimal basic;
     private BigDecimal hra;
     private BigDecimal conveyanceAllowance;
+    private BigDecimal pf;
 
     
 }
