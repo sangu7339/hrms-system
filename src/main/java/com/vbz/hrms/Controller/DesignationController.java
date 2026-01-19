@@ -11,7 +11,7 @@ import com.vbz.hrms.dto.DesignationResponseDTO;
 
 import jakarta.servlet.http.HttpSession;
 
-@RestController
+@RestController       
 @RequestMapping("/api/designations")
 public class DesignationController {
 
