@@ -28,18 +28,10 @@ public class MonthlySalaryController {
     public ResponseEntity<String> generateMonthlySalary(
             @RequestBody MonthlySalaryDto dto,
             HttpSession session) {
-
-        try {
-            String msg = monthlySalaryService.generateMonthlySalary(dto, session);
-            return ResponseEntity.status(HttpStatus.CREATED).body(msg);
-
-
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(e.getMessage());
-        }
+        String msg = monthlySalaryService.generateMonthlySalary(dto, session);
+        return ResponseEntity.status(HttpStatus.CREATED).body(msg);
     }
+
     @GetMapping("hr/month")
     public ResponseEntity<?> fetchYearAndMonth(
             @RequestParam Integer month,

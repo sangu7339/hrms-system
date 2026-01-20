@@ -7,7 +7,8 @@ public class MonthlySalaryDto {
 
     private Long totalDay;
     private Long actualDay;
-    private Long userId;
+
+    private String username;   
 
     private Integer month;
     private Integer year;

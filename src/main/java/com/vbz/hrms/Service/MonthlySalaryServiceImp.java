@@ -39,6 +39,7 @@ public class MonthlySalaryServiceImp implements MonthlySalaryService {
     @Transactional
     public String generateMonthlySalary(MonthlySalaryDto dto, HttpSession session) {
 
+       
         Long hrId = (Long) session.getAttribute("LOGGED_IN_USER_ID");
         if (hrId == null) {
             throw new IllegalStateException("HR not logged in");
@@ -47,20 +48,38 @@ public class MonthlySalaryServiceImp implements MonthlySalaryService {
         User generatedBy = userResp.findById(hrId)
                 .orElseThrow(() -> new EntityNotFoundException("HR not found"));
 
-     
+       
         if (dto.getActualDay() > dto.getTotalDay()) {
             throw new IllegalArgumentException(
                     "Actual working days cannot exceed total working days");
         }
 
+       
+        User employee = userResp.findByUsername(dto.getUsername())
+                .orElseThrow(() ->
+                        new EntityNotFoundException(
+                                "Employee not found with username: " + dto.getUsername()
+                        )
+                );
 
-        User employee = userResp.findById(dto.getUserId())
-                .orElseThrow(() -> new EntityNotFoundException("Employee not found"));
-
+       
         SalaryDetails salaryDetails = salaryDetailsRespo.findByUser(employee)
-                .orElseThrow(() -> new EntityNotFoundException("Salary details not found"));
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Salary details not found for employee")
+                );
 
+   
+        boolean alreadyGenerated =
+                monthlySalaryRespo.existsByUserAndMonthAndYear(
+                        employee, dto.getMonth(), dto.getYear());
 
+        if (alreadyGenerated) {
+            throw new IllegalStateException(
+                    "Salary already generated for "
+                            + dto.getMonth() + "/" + dto.getYear());
+        }
+
+        /* 6️⃣ MONTHLY SALARY CALCULATION */
         BigDecimal months = BigDecimal.valueOf(12);
 
         BigDecimal basicPerMonth =
@@ -75,26 +94,13 @@ public class MonthlySalaryServiceImp implements MonthlySalaryService {
         BigDecimal totalMonthlySalary =
                 basicPerMonth.add(hraPerMonth).add(conveyancePerMonth);
 
-      
         BigDecimal totalDaysBD = BigDecimal.valueOf(dto.getTotalDay());
         BigDecimal actualDaysBD = BigDecimal.valueOf(dto.getActualDay());
 
         BigDecimal perDaySalary =
                 totalMonthlySalary.divide(totalDaysBD, 2, RoundingMode.HALF_UP);
 
-        boolean alreadyGenerated =
-                monthlySalaryRespo.existsByUserAndMonthAndYear(
-                        employee,
-                        dto.getMonth(),
-                        dto.getYear()
-                );
-
-        if (alreadyGenerated) {
-            throw new IllegalStateException(
-                    "Salary already generated for this employee for "
-                            + dto.getMonth() + "/" + dto.getYear()
-            );
-        }
+        /* 7️⃣ ACTUAL PAY CALCULATION */
         BigDecimal basicPay =
                 basicPerMonth.divide(totalDaysBD, 2, RoundingMode.HALF_UP)
                         .multiply(actualDaysBD);
@@ -119,6 +125,7 @@ public class MonthlySalaryServiceImp implements MonthlySalaryService {
                 expectedGrossSalary.subtract(actualGrossSalary)
                         .setScale(2, RoundingMode.HALF_UP);
 
+       
         MonthlySalary monthlySalary = new MonthlySalary();
         monthlySalary.setUser(employee);
         monthlySalary.setGeneratedBy(generatedBy);
@@ -134,7 +141,7 @@ public class MonthlySalaryServiceImp implements MonthlySalaryService {
 
         monthlySalaryRespo.save(monthlySalary);
 
-        return "Monthly salary generated successfully";
+        return "Monthly salary generated successfully for " + employee.getUsername();
     }
 
     @Override

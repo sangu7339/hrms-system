@@ -9,6 +9,7 @@ import com.vbz.hrms.dto.BankDetailsDTO;
 import com.vbz.hrms.dto.DepartmentDto;
 import com.vbz.hrms.dto.DesignationDto;
 import com.vbz.hrms.dto.EmployeeStatutoryDetailsDTO;
+import com.vbz.hrms.dto.FtechUserId;
 import com.vbz.hrms.dto.JobDetailsDTO;
 import com.vbz.hrms.dto.OnboardingRequestDTO;
 import com.vbz.hrms.dto.PersonalDetailsDTO;
@@ -208,6 +209,7 @@ public class DeptServiceImp implements DeptService {
         if (userOpt.isPresent()) {
             user = userOpt.get();
         }
+      
         if (user == null) {
             Optional<PersonalDetails> pOpt =
                     personalDetailsRespo.findByFirstNameIgnoreCase(value)
@@ -300,7 +302,9 @@ public class DeptServiceImp implements DeptService {
 
             dto.setEmployeeStatutoryDetailsDTO(edto);
         }
-
+        FtechUserId fetch=new FtechUserId();
+        fetch.setUserid(user.getId());
+        dto.setFtechUserId(fetch);
         return dto;
     }
 

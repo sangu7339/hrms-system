@@ -11,5 +11,6 @@ public class OnboardingRequestDTO  {
     private SalaryDetailsDTO salaryDetailsDTO;
     private BankDetailsDTO bankDetailsDTO;
     private EmployeeStatutoryDetailsDTO employeeStatutoryDetailsDTO;
+    private FtechUserId ftechUserId;
 
 }
